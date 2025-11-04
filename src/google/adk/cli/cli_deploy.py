@@ -768,8 +768,9 @@ def to_agent_engine(
         click.echo(f'Creating {requirements_txt_path}...')
         with open(requirements_txt_path, 'w', encoding='utf-8') as f:
           f.write(
-              'google-cloud-aiplatform[adk,agent_engines] @'
-              ' git+https://github.com/googleapis/python-aiplatform.git@main'
+              'google-cloud-aiplatform[adk,agent_engines] @ '
+              'git+https://github.com/googleapis/python-aiplatform.git@'
+              'bf1851e59cb34e63b509a2a610e72691e1c4ca28'
           )
         click.echo(f'Created {requirements_txt_path}')
       agent_config['requirements_file'] = agent_config.get(
@@ -828,6 +829,10 @@ def to_agent_engine(
       else:
         env_vars['GOOGLE_GENAI_USE_VERTEXAI'] = '1'
         env_vars['GOOGLE_API_KEY'] = api_key
+    else:
+      if 'GOOGLE_API_KEY' in env_vars:
+        api_key = env_vars['GOOGLE_API_KEY']
+        click.echo(f'{api_key=} set by GOOGLE_API_KEY in {env_file}')
     if env_vars:
       if 'env_vars' in agent_config:
         click.echo(
