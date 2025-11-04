@@ -898,6 +898,8 @@ def to_agent_engine(
           fg='green',
       )
     else:
+      if project and region and not agent_engine_id.startswith('projects/'):
+        agent_engine_id = f'projects/{project}/locations/{region}/agentEngines/{agent_engine_id}'
       client.agent_engines.update(name=agent_engine_id, config=agent_config)
       click.secho(f'✅ Updated agent engine: {agent_engine_id}', fg='green')
   finally:
